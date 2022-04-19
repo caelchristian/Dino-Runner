@@ -4,46 +4,61 @@
 
 #ifndef M4OEP_CCHRIST7_QWARDEN_GAME_H
 #define M4OEP_CCHRIST7_QWARDEN_GAME_H
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 
-
+enum gameState {
+    startState,
+    runState,
+    pauseState,
+    endState
+}
 class Game {
 private:
     /* Window Variables */
-    sf::RenderWindow window;
+    /* window is pointer to allow dynamic allocation in Game */
+    sf::RenderWindow* window;
     sf::VideoMode videoMode;
-    sf::Event ev;
+    sf::Event event;
 
     /* Game variables */
     int health;
+    double runSpeed;
     std::vector<sf::RectangleShape> obstacles;
-    const float GRAVITY = 9.81;
+    
 
     /* Initializer functions */
-    void init_window();
-    void init_variables();
-    void init_sprites();
-    void init_text();
+    void initWindow();
+    void initVars();
+    void initSprites();
+    void initText();
     void init();
+
 public:
     Game();
     ~Game();
+
+    /* Constants */
+    const float GRAVITY = 9.81;
+
     /* Status functions */
-    const bool is_window_open();
-    const bool has_game_ended();
+    const bool isWindowOpen();
+    const bool hasGameEnded();
 
     /* Accessors */
     const sf::RenderTarget& get_window() const;
 
     /* Spawn functions */
-    void spawn_obstacles();
-    void update_obstacles();
-    void update_game();
+    void spawnObstacles();
+    void updateObstacles();
+    void updateGame();
 
     /* Draw functions */
-    void draw_player();
-    void draw_obstacles();
-    void draw();
+    void drawPlayer();
+    void drawObstacles();
+    void render();
+
+    void run();
+    void eventPoll();
 
 };
 
