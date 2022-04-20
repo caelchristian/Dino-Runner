@@ -2,17 +2,19 @@
 // Created by Cael Christian on 4/19/22.
 //
 
-#ifndef M4OEP_CCHRIST7_QWARDEN_GAME_H
-#define M4OEP_CCHRIST7_QWARDEN_GAME_H
+#ifndef M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
+#define M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
 #include "SFML/Graphics.hpp"
+#include <iostream>
+using namespace sf;
 
 enum gameState {
     startState,
     runState,
     pauseState,
     endState
-}
-class Game {
+};
+class DinoGame {
 private:
     /* Window Variables */
     /* window is pointer to allow dynamic allocation in Game */
@@ -24,18 +26,33 @@ private:
     int health;
     double runSpeed;
     std::vector<sf::RectangleShape> obstacles;
-    
+
+    /* Textures */
+    Texture bgTexture;
+    Texture dinoTexture;
+    Texture cactusTexture;
+
+    /* Sprites */
+    Sprite* bgSprite;
+    Sprite* dinoSprite;
+    Sprite* cactusSprite;
+
+    IntRect dinoAnim = IntRect(0,0,24,24);
+
+    /* Clock */
+    Clock clock;
 
     /* Initializer functions */
     void initWindow();
     void initVars();
     void initSprites();
     void initText();
+    void initClock();
     void init();
 
 public:
-    Game();
-    ~Game();
+    DinoGame();
+    ~DinoGame();
 
     /* Constants */
     const float GRAVITY = 9.81;
