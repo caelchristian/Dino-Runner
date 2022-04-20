@@ -1,11 +1,11 @@
 #include "SFML/Graphics.hpp"
-#include "Game.h"
+#include "DinoGame.h"
 
 int main()
 {
-    Game game;
+    DinoGame game;
     while (game.isWindowOpen() && !(game.hasGameEnded())) {
-        
+        game.run();
     }
     return 0;
 }
