@@ -5,10 +5,15 @@
 #ifndef M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
 #define M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
 #include "SFML/Graphics.hpp"
+#include "Dino.h"
+
 #include <iostream>
+#include <vector>
+#include <string>
+
 using namespace sf;
 
-enum gameState {
+enum GameState {
     startState,
     runState,
     pauseState,
@@ -26,6 +31,8 @@ private:
     int health;
     double runSpeed;
     std::vector<sf::RectangleShape> obstacles;
+    bool canJumpVar;
+    static GameState gameState;
 
     /* Textures */
     Texture bgTexture;
@@ -56,6 +63,9 @@ public:
 
     /* Constants */
     const float GRAVITY = 9.81;
+    const float JUMPHEIGHT = 30;
+    const int WINDOWWIDTH = 800;
+    const int WINDOWHEIGHT = 600;
 
     /* Status functions */
     const bool isWindowOpen();
@@ -63,6 +73,7 @@ public:
 
     /* Accessors */
     const sf::RenderTarget& get_window() const;
+    const bool DinoGame::canJump() const;
 
     /* Spawn functions */
     void spawnObstacles();
@@ -75,8 +86,9 @@ public:
     void render();
 
     void run();
+    const void jump(float yVelocity);
     void eventPoll();
-
+    void repositionView(View &view);
 };
 
 
