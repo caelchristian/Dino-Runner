@@ -2,30 +2,35 @@
 // Created by Cael Christian on 4/19/22.
 //
 
-#include "DinoGame.h"
+#include "DinoGame.hpp"
 
-
-DinoGame::DinoGame() {
+DinoGame::DinoGame()
+{
     void init();
 }
 
-void DinoGame::initVars() {
+void DinoGame::initVars()
+{
     health = 3;
     runSpeed = 100;
-    gameState = startState;
+    // gameState = startState;
 }
 
-void DinoGame::initSprites() {
+void DinoGame::initSprites()
+{
     // Default Green Dino
-        if(!dinoTexture.loadFromFile("Assets/dinos/green_dino.png")) {
+    if (!dinoTexture.loadFromFile("Assets/dinos/green_dino.png"))
+    {
         std::cout << "Green dino image not loaded" << std::endl;
-    } else {
+    }
+    else
+    {
         // first frame of animation
         this->dinoSprite = new Sprite(dinoTexture, dinoAnim);
     }
 }
 
-// TODO: Jump Function after Dino class is completed 
+// TODO: Jump Function after Dino class is completed
 // const void DinoGame::jump(float yVelocity, float jumpHight) {
 //     if (canJumpVar) {
 //         canJumpVar = false;
@@ -33,16 +38,25 @@ void DinoGame::initSprites() {
 //     }
 // }
 
-void DinoGame::init() {
+void initClock()
+{
+    return;
+}
+
+void DinoGame::init()
+{
     // initialize window
     this->videoMode = sf::VideoMode(WINDOWWIDTH, WINDOWHEIGHT);
-	this->window = new sf::RenderWindow(this->videoMode, "Dino Game", sf::Style::Close | sf::Style::Titlebar);
-	this->window->setFramerateLimit(60);
-    
+    this->window = new sf::RenderWindow(this->videoMode, "Dino Game", sf::Style::Close | sf::Style::Titlebar);
+    this->window->setFramerateLimit(60);
+
     // Grass
-    if(!bgTexture.loadFromFile("Assets/bg1.png")) {
+    if (!bgTexture.loadFromFile("Assets/bg1.png"))
+    {
         std::cout << "Background image not loaded" << std::endl;
-    } else {
+    }
+    else
+    {
         this->bgSprite = new Sprite(bgTexture);
     }
 
@@ -53,12 +67,13 @@ void DinoGame::init() {
     initSprites();
 
     // TODO: initialize clock
-    initClock();
+    // initClock();
 
-    // TODO: Initialize Text 
+    // TODO: Initialize Text
 }
 
-const bool DinoGame::hasGameEnded() {
+const bool DinoGame::hasGameEnded()
+{
     this->window->isOpen();
 }
 
@@ -68,33 +83,39 @@ const bool DinoGame::hasGameEnded() {
 //     view.setSize()
 // }
 
-void DinoGame::drawBackground() {
+void DinoGame::drawBackground()
+{
     // TODO: Reposition background to fit window
     this->window->draw(*bgSprite);
 }
 
-
-void DinoGame::render() {
-    for (auto& o : obstacles) {
+void DinoGame::render()
+{
+    for (auto &o : obstacles)
+    {
         this->window->draw(o);
     }
     // this->window->draw(player);
 }
 
-void DinoGame::run() {
+const bool DinoGame::isWindowOpen()
+{
+    return true;
+}
 
-    
+void DinoGame::run()
+{
 
     Clock clock;
 
-
-
-    while (this->isWindowOpen() && !(this->hasGameEnded())) {
-    // poll to quit game
+    while (this->isWindowOpen() && !(this->hasGameEnded()))
+    {
+        // poll to quit game
         while (this->window->pollEvent(this->event))
         {
             // if user closes window, end
-            switch (event.type) {
+            switch (event.type)
+            {
             case sf::Event::Closed:
                 window->close();
                 break;
@@ -104,29 +125,35 @@ void DinoGame::run() {
                     window->close();
                 break;
                 // if user presses space to start and game has NOT started yet
-                if (event.key.code == Keyboard::Space && gameState == startState) {
+                if (event.key.code == Keyboard::Space && gameState == startState)
+                {
                     gameState = runState;
                 }
                 // if dino can jump, game has started, and space is pressed
-                if (event.key.code == Keyboard::Space && gameState == runState && canJump()) {
-                    jump(velocity.x,);
+                if (event.key.code == Keyboard::Space && gameState == runState && canJump())
+                {
+                    // jump(velocity.x, );
                 }
+            default:
+                break;
             }
         }
 
         // Run Animation Dino Clock
-        if(clock.getElapsedTime().asSeconds() > .1f) {
+        if (clock.getElapsedTime().asSeconds() > .1f)
+        {
             // if animation is at end of sprite sheet start over
-            if (dinoAnim.left == 336) {
+            if (dinoAnim.left == 336)
+            {
                 dinoAnim.left = 0;
-            } else {
+            }
+            else
+            {
                 // else get next frame
                 dinoAnim.left += 24;
             }
             clock.restart();
         }
-
-
 
         // clear frame
         window->clear();
@@ -139,10 +166,7 @@ void DinoGame::run() {
     }
 }
 
-
-
 // actually don't think ill need this if since window is global var
 // const sf::RenderTarget& Game::get_window() const {
 //     return this->window;
 // }
-

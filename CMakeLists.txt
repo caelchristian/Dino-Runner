@@ -1,12 +1,15 @@
 cmake_minimum_required(VERSION 3.14)
-project(M4OEP-cchrist7-qwarden)
+project(dino)
+set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/build/cmake_modules") 
+find_package(SFML 2.5.1 COMPONENTS graphics window system audio REQUIRED) 
 
-set(SOURCE_FILES sfml.cpp)
-add_executable(M4OEP-cchrist7-qwarden ${SOURCE_FILES})
-include_directories(/usr/local/include)
+file(GLOB SOURCE_FILES
+        *.cpp
+        *.hpp
+        ) 
+add_executable(dino ${SOURCE_FILES}) 
+include_directories(${SFML_INCLUDE_DIR})
 
-find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
-include_directories(${SFML_INCLUDE_DIRS})
-target_link_libraries(M4OEP-cchrist7-qwarden sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+target_link_libraries(dino ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})

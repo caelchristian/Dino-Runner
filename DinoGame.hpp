@@ -4,8 +4,9 @@
 
 #ifndef M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
 #define M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
-#include "SFML/Graphics.hpp"
-#include "Dino.h"
+
+#include <SFML/Graphics.hpp>
+#include "Dino.hpp"
 
 #include <iostream>
 #include <vector>
@@ -13,17 +14,19 @@
 
 using namespace sf;
 
-enum GameState {
+enum GameState
+{
     startState,
     runState,
     pauseState,
     endState
 };
-class DinoGame {
+class DinoGame
+{
 private:
     /* Window Variables */
     /* window is pointer to allow dynamic allocation in Game */
-    sf::RenderWindow* window;
+    sf::RenderWindow *window;
     sf::VideoMode videoMode;
     sf::Event event;
 
@@ -40,11 +43,11 @@ private:
     Texture cactusTexture;
 
     /* Sprites */
-    Sprite* bgSprite;
-    Sprite* dinoSprite;
-    Sprite* cactusSprite;
+    Sprite *bgSprite;
+    Sprite *dinoSprite;
+    Sprite *cactusSprite;
 
-    IntRect dinoAnim = IntRect(0,0,24,24);
+    IntRect dinoAnim = IntRect(0, 0, 24, 24);
 
     /* Clock */
     Clock clock;
@@ -59,7 +62,7 @@ private:
 
 public:
     DinoGame();
-    ~DinoGame();
+    // ~DinoGame();
 
     /* Constants */
     const float GRAVITY = 9.81;
@@ -72,8 +75,8 @@ public:
     const bool hasGameEnded();
 
     /* Accessors */
-    const sf::RenderTarget& get_window() const;
-    const bool DinoGame::canJump() const;
+    const sf::RenderTarget &get_window() const;
+    const bool canJump() const;
 
     /* Spawn functions */
     void spawnObstacles();
@@ -83,6 +86,7 @@ public:
     /* Draw functions */
     void drawPlayer();
     void drawObstacles();
+    void drawBackground();
     void render();
 
     void run();
@@ -91,5 +95,4 @@ public:
     void repositionView(View &view);
 };
 
-
-#endif //M4OEP_CCHRIST7_QWARDEN_GAME_H
+#endif // M4OEP_CCHRIST7_QWARDEN_GAME_H

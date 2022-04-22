@@ -6,17 +6,23 @@
 #include "SFML/Graphics.hpp"
 using namespace sf;
 
-enum ColorDino{
-    green,yellow,red,blue
+enum ColorDino
+{
+    green,
+    yellow,
+    red,
+    blue
 };
 
-class Dino {
+class Dino
+{
 private:
     float speed;
     ColorDino playerColor;
     Texture DinoTexture;
+
 public:
-    Dino()
+    Dino();
 };
 
-#endif //M4OEP_CCHRIST7_QWARDEN_DINO_H
+#endif // M4OEP_CCHRIST7_QWARDEN_DINO_H
