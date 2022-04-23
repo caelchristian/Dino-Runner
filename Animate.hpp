@@ -6,19 +6,19 @@
 #include <SFML/Graphics.hpp>
 using namespace sf;
 
-class Animate
-{
+class Animate {
 public:
-    Animate(Texture *texture, float totalAnimTime, Vector2u spriteSize);
-    ~Animate();
-    void update(int row);
+    Animate(Texture* texture, Vector2u spriteDimensions, float totalAnimTime, float numOfFrames);
+    virtual ~Animate() = 0;
 
+    void update();
 private:
-    Vector2u spriteCount;
     Vector2u currentFrame;
+    Vector2u spriteDimensions;
     IntRect textureRect;
-
     float totalAnimTime;
+    float timeBetweenFrames;
+    float numOfFrames;
 };
 
 #endif
