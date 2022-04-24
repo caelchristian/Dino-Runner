@@ -3,10 +3,13 @@
 
 int main()
 {
+
     DinoGame game;
-    while (game.isWindowOpen() && !(game.hasGameEnded()))
+
+    while (game.isWindowOpen())
     {
-        game.run();
+        game.mainLoop();
     }
+
     return 0;
 }
