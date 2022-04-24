@@ -2,8 +2,8 @@
 // Created by Cael Christian on 4/19/22.
 //
 
-#ifndef M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
-#define M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
+#ifndef M4OEP_CCHRIST7_QWARDEN_DINOGAME_HPP
+#define M4OEP_CCHRIST7_QWARDEN_DINOGAME_HPP
 #include "SFML/Graphics.hpp"
 #include "Dino.hpp"
 
@@ -67,9 +67,8 @@ public:
     const int WINDOWWIDTH = 800;
     const int WINDOWHEIGHT = 600;
 
-    /* Status functions */
+    /* Status functions */c
     const bool isWindowOpen();
-    void pollEvents();
 
     /* Initializer functions */
     // void initWindow();
@@ -104,4 +103,4 @@ public:
         void repositionView(View &view);*/
 };
 
-#endif // M4OEP_CCHRIST7_QWARDEN_GAME_H
+#endif // M4OEP_CCHRIST7_QWARDEN_GAME_HPP

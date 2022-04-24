@@ -79,25 +79,6 @@ const sf::RenderTarget &DinoGame::getWindow()
 //     this->window->draw(*bgSprite);
 // }
 
-void DinoGame::pollEvents()
-{
-    while (this->window->pollEvent(this->event))
-    {
-        switch (this->event.type)
-        {
-        case sf::Event::Closed:
-            this->window->close();
-            break;
-        case sf::Event::KeyPressed:
-            if (this->event.key.code == sf::Keyboard::Escape)
-                this->window->close();
-            break;
-        default:
-            break;
-        }
-    }
-}
-
 void DinoGame::render()
 {
     for (auto &o : obstacles)

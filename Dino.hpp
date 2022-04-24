@@ -1,5 +1,5 @@
-#ifndef M4OEP_CCHRIST7_QWARDEN_DINO_H
-#define M4OEP_CCHRIST7_QWARDEN_DINO_H
+#ifndef M4OEP_CCHRIST7_QWARDEN_DINO_HPP
+#define M4OEP_CCHRIST7_QWARDEN_DINO_HPP
 #include <iostream>
 #include <vector>
 #include <string>
@@ -38,4 +38,4 @@ public:
     void Draw(sf::RenderTarget &window);
 };
 
-#endif // M4OEP_CCHRIST7_QWARDEN_DINO_H
+#endif // M4OEP_CCHRIST7_QWARDEN_DINO_HPP
