@@ -74,7 +74,7 @@ int main()
         }
 
         // store reference to Dino IntRect hitbox
-        dinoSprite.move(0, velocity.y);
+        dinoSprite.move(0, velocity);
 
         // if the hitBox is below peak height, increase upwards velocity
         if (dinoSprite.getPosition().y + dinoSprite.getLocalBounds().height < groundHeight)
