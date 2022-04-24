@@ -48,11 +48,11 @@ int main()
     dinoSprite.setPosition(100, 550);
     dinoSprite.setScale(5.f, 5.f);
 
-    Sprite groundSprite(groundTexture);
+    Sprite groundSprite(bg1);
     groundSprite.setPosition(0,100);
     groundSprite.setScale(4.f, 4.f);
 
-    vector<Sprite> obstacles;
+    // vector<Sprite> obstacles;
 
 
 
