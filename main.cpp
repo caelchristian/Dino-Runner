@@ -1,12 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <vector>
+
 using namespace sf;
 
 /* Constants */
 const float GRAVITY = 3;
 const float JUMPHEIGHT = 30;
-const int WINDOWWIDTH = 800;
-const int WINDOWHEIGHT = 600;
+const int WINDOWWIDTH = 1200;
+const int WINDOWHEIGHT = 800;
 
 int main()
 {
@@ -24,7 +26,7 @@ int main()
     std::vector<sf::RectangleShape> obstacles;
     bool canJumpVar = true;
     float jumpSpeed = 20.0f;
-    int groundHeight = 300;
+    int groundHeight = 550;
     // IntRect params are (left,top,width,height)
     IntRect dinoIntRect = IntRect(72, 0, 24, 24);
     float velocity;
@@ -32,14 +34,23 @@ int main()
     /* Textures */
     Texture dinoTexture;
     dinoTexture.loadFromFile("../assets/green_dino.png");
-    Texture ground;
-    ground.loadFromFile("../assets/bg1.png");
+    Texture groundTexture;
+    groundTexture.loadFromFile("../assets/bg1.png");
 
     /* Sprites */
 
     Sprite dinoSprite(dinoTexture, dinoIntRect);
-    dinoSprite.setPosition(WINDOWWIDTH / 6, WINDOWHEIGHT - WINDOWHEIGHT / 3);
+    // dino y position is 1st quadrant oriented
+    dinoSprite.setPosition(100, 550);
     dinoSprite.setScale(5.f, 5.f);
+
+    Sprite groundSprite(groundTexture);
+    groundSprite.setPosition(0,100);
+    groundSprite.setScale(4.f, 4.f);
+
+    vector<Sprite> obstacles;
+
+
 
     while (window.isOpen())
     {
@@ -104,19 +115,12 @@ int main()
             IntRect changeDinoRect;
             // if animation is at end of sprite sheet start over
             if (dinoSprite.getTextureRect().left == 216)
-            {
                 dinoIntRect.left = 96;
-            }
             else
-            {
                 // else get next frame
                 dinoIntRect.left += 24;
-            }
-
             if (!canJumpVar)
-            {
                 dinoIntRect.left = 72;
-            }
 
             // set the dino sprite texture rect to the new frame
             dinoSprite.setTextureRect(dinoIntRect);
@@ -127,6 +131,7 @@ int main()
         window.clear();
 
         /* Draw here */
+        window.draw(groundSprite);
         window.draw(dinoSprite);
 
         // display frame
