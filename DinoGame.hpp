@@ -4,7 +4,7 @@
 
 #ifndef M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
 #define M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
-#include "SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
 #include "Dino.hpp"
 
 #include <iostream>
