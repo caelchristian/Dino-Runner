@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
-#include "DinoGame.hpp"
+#include "Dino.hpp"
 #include <memory>
+using namespace sf;
 
 
 /* Constants */
