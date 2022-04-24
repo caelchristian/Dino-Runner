@@ -4,8 +4,7 @@
 
 #ifndef M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
 #define M4OEP_CCHRIST7_QWARDEN_DINOGAME_H
-
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 #include "Dino.hpp"
 
 #include <iostream>
@@ -14,85 +13,96 @@
 
 using namespace sf;
 
-enum GameState
-{
+enum GameState {
     startState,
     runState,
     pauseState,
     endState
 };
-class DinoGame
-{
+
+class DinoGame {
 private:
     /* Window Variables */
     /* window is pointer to allow dynamic allocation in Game */
-    sf::RenderWindow *window;
-    sf::VideoMode videoMode;
-    sf::Event event;
+    RenderWindow* window;
+    VideoMode videoMode;
+    Event event;
 
     /* Game variables */
+    GameState gameState;
     int health;
     double runSpeed;
     std::vector<sf::RectangleShape> obstacles;
     bool canJumpVar;
-    static GameState gameState;
+    float jumpSpeed;
+    int groundHeight;
 
     /* Textures */
-    Texture bgTexture;
     Texture dinoTexture;
+    Texture bgTexture;
     Texture cactusTexture;
 
     /* Sprites */
-    Sprite *bgSprite;
-    Sprite *dinoSprite;
-    Sprite *cactusSprite;
+    Sprite* bgSprite;
+    Sprite* dinoSprite;
+    Sprite* cactusSprite;
 
-    IntRect dinoAnim = IntRect(0, 0, 24, 24);
+    /* Custom Objects */
+    Dino dino;
+    // vector<Obstacle> cacti;
+
+    // IntRect params are (left,top,width,height)
+    IntRect dinoIntRect = IntRect(0,0,24,24);
+    Vector2f velocity;
 
     /* Clock */
     Clock clock;
-
-    /* Initializer functions */
-    void initWindow();
-    void initVars();
-    void initSprites();
-    void initText();
-    void initClock();
-    void init();
-
 public:
     DinoGame();
     // ~DinoGame();
 
     /* Constants */
-    const float GRAVITY = 9.81;
+    const float GRAVITY = 3;
     const float JUMPHEIGHT = 30;
-    const int WINDOWWIDTH = 800;
+    const  int WINDOWWIDTH = 800;
     const int WINDOWHEIGHT = 600;
 
     /* Status functions */
     const bool isWindowOpen();
-    const bool hasGameEnded();
+    void pollEvents();
+
+    /* Initializer functions */
+    // void initWindow();
+    void initVars();
+    void initSprites();
+    // void initText();
+    void initClock();
+    void initWindow();
 
     /* Accessors */
-    const sf::RenderTarget &get_window() const;
-    const bool canJump() const;
+    const sf::RenderTarget& getWindow();
+    // const bool canJump() const;
 
     /* Spawn functions */
-    void spawnObstacles();
-    void updateObstacles();
-    void updateGame();
+    //void spawnObstacles();
+    //void updateObstacles();
+    // void updatePlayer();
+    //void updateGame();
 
-    /* Draw functions */
-    void drawPlayer();
-    void drawObstacles();
+    /* Update Functions */
+    void updatePlayer();
+
+    /* Draw functions
     void drawBackground();
+    void drawPlayer();
+    void drawObstacles(); */
     void render();
 
-    void run();
-    const void jump(float yVelocity);
+    void mainLoop();
+/*    const void jump(float yVelocity, float jumpHeight);
     void eventPoll();
-    void repositionView(View &view);
+    void repositionView(View &view);*/
 };
 
-#endif // M4OEP_CCHRIST7_QWARDEN_GAME_H
+
+#endif //M4OEP_CCHRIST7_QWARDEN_GAME_H
