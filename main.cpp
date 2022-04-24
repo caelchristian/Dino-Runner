@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include "Dino.hpp"
 #include <memory>
 using namespace sf;
 
@@ -52,16 +51,16 @@ int main()
             // if user closes window, end
             switch (event.type)
             {
-                case sf::Event::Closed:
+            case sf::Event::Closed:
+                window->close();
+                break;
+                // if user presses escape, end
+            case sf::Event::KeyPressed:
+                if (event.key.code == sf::Keyboard::Escape)
                     window->close();
-                    break;
-                    // if user presses escape, end
-                case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::Escape)
-                        window->close();
-                    break;
-                default:
-                    break;
+                break;
+            default:
+                break;
             }
         }
 
@@ -88,6 +87,15 @@ int main()
 //            velocity.y = 0;
 //            hitBox.setPosition(hitBox.getPosition().x, groundHeight - hitBox.getSize().y);
 //        }
+        // if the hitBox is below peak height, increase upwards velocity
+        if (hitBox.getPosition().y + hitBox.getSize().y < groundHeight)
+            velocity.y += GRAVITY;
+        // else set position to ground height - hitBox height
+        else
+        {
+            velocity.y = 0;
+            hitBox.setPosition(hitBox.getPosition().x, groundHeight - hitBox.getSize().y);
+        }
 
         // this->updateCollision();
 
@@ -109,5 +117,5 @@ int main()
         window->display();
     }
 
-return 0;
+    return 0;
 }
