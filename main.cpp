@@ -13,8 +13,8 @@ int main()
     /* Window Variables */
     /* window is pointer to allow dynamic allocation in Game */
     VideoMode videoMode(WINDOWWIDTH, WINDOWHEIGHT);
-    std::shared_ptr<RenderWindow> window = std::make_shared<RenderWindow>(videoMode, "Dino Game", sf::Style::Close | sf::Style::Titlebar);
-    window->setFramerateLimit(60);
+    RenderWindow window(videoMode, "Dino Runner", sf::Style::Close | sf::Style::Titlebar);
+    window.setFramerateLimit(60);
     Event event;
     Clock clock;
 
@@ -41,21 +41,21 @@ int main()
     dinoSprite.setPosition(WINDOWWIDTH / 6, WINDOWHEIGHT - WINDOWHEIGHT / 3);
     dinoSprite.setScale(5.f, 5.f);
 
-    while (window->isOpen())
+    while (window.isOpen())
     {
         // poll to quit game
-        while (window->pollEvent(event))
+        while (window.pollEvent(event))
         {
             // if user closes window, end
             switch (event.type)
             {
             case sf::Event::Closed:
-                window->close();
+                window.close();
                 break;
                 // if user presses escape, end
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::Escape)
-                    window->close();
+                    window.close();
                 break;
             default:
                 break;
@@ -105,13 +105,13 @@ int main()
         }
 
         // clear frame
-        window->clear();
+        window.clear();
 
         /* Draw here */
-        window->draw(dinoSprite);
+        window.draw(dinoSprite);
 
         // display frame
-        window->display();
+        window.display();
     }
 
     return 0;
