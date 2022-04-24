@@ -1,7 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include <vector>
-
 using namespace sf;
 
 /* Constants */
@@ -34,8 +32,14 @@ int main()
     /* Textures */
     Texture dinoTexture;
     dinoTexture.loadFromFile("../assets/green_dino.png");
-    Texture groundTexture;
-    groundTexture.loadFromFile("../assets/bg1.png");
+    Texture bg1;
+    bg1.loadFromFile("../assets/bg1.png");
+    Texture bg2;
+    bg2.loadFromFile("../assets/bg2.png");
+    Texture bg3;
+    bg3.loadFromFile("../assets/bg3.png");
+    Texture bg4;
+    bg4.loadFromFile("../assets/bg4.png");
 
     /* Sprites */
 
