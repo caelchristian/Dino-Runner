@@ -67,9 +67,7 @@ public:
     const int WINDOWWIDTH = 800;
     const int WINDOWHEIGHT = 600;
 
-    /* Status functions */
-    const bool isWindowOpen();
-    void pollEvents();
+    /* Status functions */ c const bool isWindowOpen();
 
     /* Initializer functions */
     // void initWindow();
@@ -104,4 +102,4 @@ public:
         void repositionView(View &view);*/
 };
 
-#endif // M4OEP_CCHRIST7_QWARDEN_GAME_H
+#endif // M4OEP_CCHRIST7_QWARDEN_GAME_HPP
