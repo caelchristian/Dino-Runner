@@ -31,11 +31,17 @@ int main()
 
     /* Textures */
     Texture dinoTexture;
+    dinoTexture.loadFromFile("../assets/dinos/green_dino.png");
+    Texture ground;
+    ground.loadFromFile("../assets/bg1.png");
 
-    /* Objects */
-    Sprite dino(dinoTexture, dinoRect);
+    /* Sprites */
 
-    while (window->isOpen() && running)
+    Sprite dinoSprite(dinoTexture, dinoIntRect);
+    dinoSprite.setPosition(WINDOWWIDTH / 6, WINDOWHEIGHT - WINDOWHEIGHT / 3);
+    dinoSprite.setScale(5.f, 5.f);
+
+    while (window->isOpen())
     {
         // poll to quit game
         while (window->pollEvent(event))
@@ -61,28 +67,40 @@ int main()
 
         // update dino position if jump
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-            velocity.x = jumpSpeed;
-
-        // store reference to Dino IntRect hitbox
-        RectangleShape hitBox = dino.getHitBox();
-        hitBox.move(velocity.x, velocity.y);
-
-        // if the hitBox is below peak height, increase upwards velocity
-        if (hitBox.getPosition().y + hitBox.getSize().y < groundHeight)
-            velocity.y += GRAVITY;
-        // else set position to ground height - hitBox height
-        else
         {
-            velocity.y = 0;
-            hitBox.setPosition(hitBox.getPosition().x, groundHeight - hitBox.getSize().y);
+            velocity.x = jumpSpeed;
+            running = true;
         }
+
+        //        // store reference to Dino IntRect hitbox
+        //        RectangleShape hitBox = dino.getHitBox();
+        //        hitBox.move(velocity.x, velocity.y);
+        //
+        //        // if the hitBox is below peak height, increase upwards velocity
+        //        if (hitBox.getPosition().y + hitBox.getSize().y < groundHeight)
+        //            velocity.y += GRAVITY;
+        //            // else set position to ground height - hitBox height
+        //        else
+        //        {
+        //            velocity.y = 0;
+        //            hitBox.setPosition(hitBox.getPosition().x, groundHeight - hitBox.getSize().y);
+        //        }
+        //        // if the hitBox is below peak height, increase upwards velocity
+        //        if (hitBox.getPosition().y + hitBox.getSize().y < groundHeight)
+        //            velocity.y += GRAVITY;
+        //        // else set position to ground height - hitBox height
+        //        else
+        //        {
+        //            velocity.y = 0;
+        //            hitBox.setPosition(hitBox.getPosition().x, groundHeight - hitBox.getSize().y);
+        //        }
 
         // this->updateCollision();
 
         // Run Animation Dino Clock
         if (clock.getElapsedTime().asSeconds() > .1f)
         {
-            dino.nextFrame(dinoIntRect);
+            // dino.nextFrame(dinoIntRect);
             clock.restart();
         }
 
@@ -90,7 +108,7 @@ int main()
         window->clear();
 
         /* Draw here */
-        window->draw(dino.getSprite());
+        window->draw(dinoSprite);
 
         // display frame
         window->display();
