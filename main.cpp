@@ -2,7 +2,6 @@
 #include <memory>
 using namespace sf;
 
-
 /* Constants */
 const float GRAVITY = 3;
 const float JUMPHEIGHT = 30;
@@ -28,7 +27,7 @@ int main()
     int groundHeight = 300;
     // IntRect params are (left,top,width,height)
     IntRect dinoIntRect = IntRect(72, 0, 24, 24);
-    Vector2f velocity;
+    float velocity;
 
     /* Textures */
     Texture dinoTexture;
@@ -38,9 +37,9 @@ int main()
 
     /* Sprites */
 
-    Sprite dinoSprite(dinoTexture,dinoIntRect);
-    dinoSprite.setPosition(WINDOWWIDTH/6,WINDOWHEIGHT - WINDOWHEIGHT/3);
-    dinoSprite.setScale(5.f,5.f);
+    Sprite dinoSprite(dinoTexture, dinoIntRect);
+    dinoSprite.setPosition(WINDOWWIDTH / 6, WINDOWHEIGHT - WINDOWHEIGHT / 3);
+    dinoSprite.setScale(5.f, 5.f);
 
     while (window.isOpen())
     {
@@ -69,39 +68,38 @@ int main()
         // update dino position if jump
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && canJumpVar)
         {
-            velocity.y = -jumpSpeed;
+            velocity = -jumpSpeed;
             running = true;
             canJumpVar = false;
         }
 
         // store reference to Dino IntRect hitbox
-        dinoSprite.move(velocity.x, velocity.y);
+        dinoSprite.move(0, velocity.y);
 
         // if the hitBox is below peak height, increase upwards velocity
         if (dinoSprite.getPosition().y + dinoSprite.getLocalBounds().height < groundHeight)
-            velocity.y += GRAVITY;
-            // else set position to ground height - hitBox height
-        else
-        {
-            velocity.y = 0;
-            dinoSprite.setPosition(dinoSprite.getPosition().x, groundHeight - dinoSprite.getLocalBounds().height);
-        }
-        // if the hitBox is below peak height, increase upwards velocity
-        if (dinoSprite.getPosition().y + dinoSprite.getLocalBounds().height < groundHeight || velocity.y < 0)
-            velocity.y += GRAVITY;
+            velocity += GRAVITY;
         // else set position to ground height - hitBox height
         else
         {
-            velocity.y = 0;
+            velocity = 0;
+            dinoSprite.setPosition(dinoSprite.getPosition().x, groundHeight - dinoSprite.getLocalBounds().height);
+        }
+        // if the hitBox is below peak height, increase upwards velocity
+        if (dinoSprite.getPosition().y + dinoSprite.getLocalBounds().height < groundHeight || velocity < 0)
+            velocity += GRAVITY;
+        // else set position to ground height - hitBox height
+        else
+        {
+            velocity = 0;
             dinoSprite.setPosition(dinoSprite.getPosition().x, groundHeight - dinoSprite.getLocalBounds().height);
             canJumpVar = true;
         }
 
         // this->updateCollision();
 
-
         // Run Animation Dino Clock for each frame
-        if (clock.getElapsedTime().asSeconds() > float(8.0/60))
+        if (clock.getElapsedTime().asSeconds() > float(8.0 / 60))
         {
             IntRect changeDinoRect;
             // if animation is at end of sprite sheet start over
