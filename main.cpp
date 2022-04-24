@@ -87,15 +87,15 @@ int main()
 //            velocity.y = 0;
 //            hitBox.setPosition(hitBox.getPosition().x, groundHeight - hitBox.getSize().y);
 //        }
-        // if the hitBox is below peak height, increase upwards velocity
-        if (hitBox.getPosition().y + hitBox.getSize().y < groundHeight)
-            velocity.y += GRAVITY;
-        // else set position to ground height - hitBox height
-        else
-        {
-            velocity.y = 0;
-            hitBox.setPosition(hitBox.getPosition().x, groundHeight - hitBox.getSize().y);
-        }
+//        // if the hitBox is below peak height, increase upwards velocity
+//        if (hitBox.getPosition().y + hitBox.getSize().y < groundHeight)
+//            velocity.y += GRAVITY;
+//        // else set position to ground height - hitBox height
+//        else
+//        {
+//            velocity.y = 0;
+//            hitBox.setPosition(hitBox.getPosition().x, groundHeight - hitBox.getSize().y);
+//        }
 
         // this->updateCollision();
 
