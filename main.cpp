@@ -4,7 +4,7 @@ using namespace sf;
 
 
 /* Constants */
-const float GRAVITY = 3;
+const float GRAVITY = .5;
 const float JUMPHEIGHT = 30;
 const int WINDOWWIDTH = 800;
 const int WINDOWHEIGHT = 600;
@@ -24,15 +24,15 @@ int main()
     double runSpeed = 100;
     std::vector<sf::RectangleShape> obstacles;
     bool canJumpVar = true;
-    float jumpSpeed = 3.0f;
+    float jumpSpeed = 20.0f;
     int groundHeight = 300;
     // IntRect params are (left,top,width,height)
-    IntRect dinoIntRect = IntRect(0, 0, 24, 24);
+    IntRect dinoIntRect = IntRect(72, 0, 24, 24);
     Vector2f velocity;
 
     /* Textures */
     Texture dinoTexture;
-    dinoTexture.loadFromFile("../assets/dinos/green_dino.png");
+    dinoTexture.loadFromFile("../assets/green_dino.png");
     Texture ground;
     ground.loadFromFile("../assets/bg1.png");
 
@@ -68,44 +68,64 @@ int main()
         // this->spawnObstacles();
 
         // update dino position if jump
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && canJumpVar)
         {
-            velocity.x = jumpSpeed;
+            velocity.y = -jumpSpeed;
             running = true;
+            canJumpVar = false;
         }
 
-//        // store reference to Dino IntRect hitbox
-//        RectangleShape hitBox = dino.getHitBox();
-//        hitBox.move(velocity.x, velocity.y);
-//
-//        // if the hitBox is below peak height, increase upwards velocity
-//        if (hitBox.getPosition().y + hitBox.getSize().y < groundHeight)
-//            velocity.y += GRAVITY;
-//            // else set position to ground height - hitBox height
-//        else
-//        {
-//            velocity.y = 0;
-//            hitBox.setPosition(hitBox.getPosition().x, groundHeight - hitBox.getSize().y);
-//        }
-//        // if the hitBox is below peak height, increase upwards velocity
-//        if (hitBox.getPosition().y + hitBox.getSize().y < groundHeight)
-//            velocity.y += GRAVITY;
-//        // else set position to ground height - hitBox height
-//        else
-//        {
-//            velocity.y = 0;
-//            hitBox.setPosition(hitBox.getPosition().x, groundHeight - hitBox.getSize().y);
-//        }
+        // store reference to Dino IntRect hitbox
+        dinoSprite.move(velocity.x, velocity.y);
+
+        // if the hitBox is below peak height, increase upwards velocity
+        if (dinoSprite.getPosition().y + dinoSprite.getLocalBounds().height < groundHeight)
+            velocity.y += GRAVITY;
+            // else set position to ground height - hitBox height
+        else
+        {
+            velocity.y = 0;
+            dinoSprite.setPosition(dinoSprite.getPosition().x, groundHeight - dinoSprite.getLocalBounds().height);
+        }
+        // if the hitBox is below peak height, increase upwards velocity
+        if (dinoSprite.getPosition().y + dinoSprite.getLocalBounds().height < groundHeight || velocity.y < 0)
+            velocity.y += GRAVITY;
+        // else set position to ground height - hitBox height
+        else
+        {
+            velocity.y = 0;
+            dinoSprite.setPosition(dinoSprite.getPosition().x, groundHeight - dinoSprite.getLocalBounds().height);
+            canJumpVar = true;
+        }
 
         // this->updateCollision();
 
 
-        // Run Animation Dino Clock
-        if (clock.getElapsedTime().asSeconds() > .1f)
+        // Run Animation Dino Clock for each frame
+        if (clock.getElapsedTime().asSeconds() > float(8.0/60))
         {
-            //dino.nextFrame(dinoIntRect);
+            IntRect changeDinoRect;
+            // if animation is at end of sprite sheet start over
+            if (dinoSprite.getTextureRect().left == 216)
+            {
+                dinoIntRect.left = 96;
+            }
+            else
+            {
+                // else get next frame
+                dinoIntRect.left += 24;
+            }
+
+            if (!canJumpVar)
+            {
+                dinoIntRect.left = 72;
+            }
+
+            // set the dino sprite texture rect to the new frame
+            dinoSprite.setTextureRect(dinoIntRect);
             clock.restart();
         }
+
 
         // clear frame
         window->clear();
