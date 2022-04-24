@@ -13,6 +13,7 @@ enum ColorDino{
 class Dino {
 private:
     ColorDino color;
+    RectangleShape hitBox;
     Texture texture;
     Sprite sprite;
 
@@ -25,6 +26,9 @@ public:
     void setDinoColor(ColorDino color);
     const Texture& getTexture() const;
     const Sprite& getSprite() const;
+    const RectangleShape& getHitBox() const;
+    void nextFrame(IntRect& spriteFrame) const;
+    void update();
 
     void Draw(sf::RenderTarget& window);
 
