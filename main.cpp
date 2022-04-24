@@ -1,8 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include "Dino.hpp"
 #include <memory>
 using namespace sf;
-
 
 /* Constants */
 const float GRAVITY = 3;
@@ -37,7 +35,6 @@ int main()
     /* Objects */
     Dino dino;
 
-
     while (window->isOpen() && running)
     {
         // poll to quit game
@@ -46,16 +43,16 @@ int main()
             // if user closes window, end
             switch (event.type)
             {
-                case sf::Event::Closed:
+            case sf::Event::Closed:
+                window->close();
+                break;
+                // if user presses escape, end
+            case sf::Event::KeyPressed:
+                if (event.key.code == sf::Keyboard::Escape)
                     window->close();
-                    break;
-                    // if user presses escape, end
-                case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::Escape)
-                        window->close();
-                    break;
-                default:
-                    break;
+                break;
+            default:
+                break;
             }
         }
 
@@ -73,7 +70,7 @@ int main()
         // if the hitBox is below peak height, increase upwards velocity
         if (hitBox.getPosition().y + hitBox.getSize().y < groundHeight)
             velocity.y += GRAVITY;
-            // else set position to ground height - hitBox height
+        // else set position to ground height - hitBox height
         else
         {
             velocity.y = 0;
@@ -81,7 +78,6 @@ int main()
         }
 
         // this->updateCollision();
-
 
         // Run Animation Dino Clock
         if (clock.getElapsedTime().asSeconds() > .1f)
@@ -100,5 +96,5 @@ int main()
         window->display();
     }
 
-return 0;
+    return 0;
 }
