@@ -31,13 +31,13 @@ int main()
 
     /* Textures */
     Texture dinoTexture;
-    dinoTexture.loadFromFile("../assets/dinos/green_dino.png");
+    dinoTexture.loadFromFile("../assets/green_dino.png");
     Texture ground;
     ground.loadFromFile("../assets/bg1.png");
 
     /* Sprites */
 
-    Sprite dinoSprite(dinoTexture, dinoIntRect);
+    Sprite dinoSprite(dinoTexture, dinoRect);
     dinoSprite.setPosition(WINDOWWIDTH / 6, WINDOWHEIGHT - WINDOWHEIGHT / 3);
     dinoSprite.setScale(5.f, 5.f);
 
