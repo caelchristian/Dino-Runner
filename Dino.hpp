@@ -6,11 +6,16 @@
 #include "SFML/Graphics.hpp"
 using namespace sf;
 
-enum ColorDino{
-    green,yellow,red,blue
+enum ColorDino
+{
+    green,
+    yellow,
+    red,
+    blue
 };
 
-class Dino {
+class Dino
+{
 private:
     ColorDino color;
     RectangleShape hitBox;
@@ -24,14 +29,13 @@ public:
     void setTexture(Texture dinoTexture);
     void setSprite(Sprite sprite);
     void setDinoColor(ColorDino color);
-    const Texture& getTexture() const;
-    const Sprite& getSprite() const;
-    const RectangleShape& getHitBox() const;
-    void nextFrame(IntRect& spriteFrame) const;
+    const Texture &getTexture() const;
+    const Sprite &getSprite() const;
+    const RectangleShape &getHitBox() const;
+    void nextFrame(IntRect &spriteFrame) const;
     void update();
 
-    void Draw(sf::RenderTarget& window);
-
+    void Draw(sf::RenderTarget &window);
 };
 
-#endif //M4OEP_CCHRIST7_QWARDEN_DINO_H
+#endif // M4OEP_CCHRIST7_QWARDEN_DINO_H

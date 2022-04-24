@@ -6,9 +6,8 @@
 
 void DinoGame::initVars()
 {
-    health = 3;
     runSpeed = 100;
-    gameState = startState;
+    gameState = runState;
     groundHeight = 300;
     jumpSpeed = 3.0f;
 }
@@ -24,7 +23,8 @@ void DinoGame::initSprites()
     this->bgSprite = new Sprite(bgTexture);
 }
 
-void DinoGame::initWindow() {
+void DinoGame::initWindow()
+{
     // initialize window
     this->videoMode = sf::VideoMode(WINDOWWIDTH, WINDOWHEIGHT);
     this->window = new sf::RenderWindow(this->videoMode, "Dino Game", sf::Style::Close | sf::Style::Titlebar);
@@ -43,7 +43,6 @@ DinoGame::DinoGame()
     // initClock();
 
     // TODO: Initialize Text
-
 }
 
 // TODO: Jump Function after Dino class is completed
@@ -59,15 +58,14 @@ const bool DinoGame::isWindowOpen()
     return this->window->isOpen();
 }
 
-const sf::RenderTarget& DinoGame::getWindow()
+const sf::RenderTarget &DinoGame::getWindow()
 {
     return *this->window;
 }
 
 // const void DinoGame::canJump() const {
-    // if (this->dino
+// if (this->dino
 // }
-
 
 // void DinoGame::repositionView(View &view) {
 //     float aspectRatio = float(window->getSize().x) / float(window->getSize().y);
@@ -75,11 +73,11 @@ const sf::RenderTarget& DinoGame::getWindow()
 //     view.setSize()
 // }
 
-//void DinoGame::drawBackground()
+// void DinoGame::drawBackground()
 //{
-//    // TODO: Reposition background to fit window
-//    this->window->draw(*bgSprite);
-//}
+//     // TODO: Reposition background to fit window
+//     this->window->draw(*bgSprite);
+// }
 
 void DinoGame::pollEvents()
 {
@@ -87,15 +85,15 @@ void DinoGame::pollEvents()
     {
         switch (this->event.type)
         {
-            case sf::Event::Closed:
+        case sf::Event::Closed:
+            this->window->close();
+            break;
+        case sf::Event::KeyPressed:
+            if (this->event.key.code == sf::Keyboard::Escape)
                 this->window->close();
-                break;
-            case sf::Event::KeyPressed:
-                if (this->event.key.code == sf::Keyboard::Escape)
-                    this->window->close();
-                break;
-            default:
-                break;
+            break;
+        default:
+            break;
         }
     }
 }
@@ -120,16 +118,16 @@ void DinoGame::mainLoop()
             // if user closes window, end
             switch (event.type)
             {
-                case sf::Event::Closed:
+            case sf::Event::Closed:
+                window->close();
+                break;
+                // if user presses escape, end
+            case sf::Event::KeyPressed:
+                if (event.key.code == sf::Keyboard::Escape)
                     window->close();
-                    break;
-                    // if user presses escape, end
-                case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::Escape)
-                        window->close();
-                    break;
-                default:
-                    break;
+                break;
+            default:
+                break;
             }
         }
 
@@ -149,7 +147,7 @@ void DinoGame::mainLoop()
             // if the hitBox is below peak height, increase upwards velocity
             if (hitBox.getPosition().y + hitBox.getSize().y < groundHeight)
                 velocity.y += GRAVITY;
-                // else set position to ground height - hitBox height
+            // else set position to ground height - hitBox height
             else
             {
                 velocity.y = 0;
@@ -166,17 +164,17 @@ void DinoGame::mainLoop()
             clock.restart();
         }
 
-            // clear frame
-            window->clear();
+        // clear frame
+        window->clear();
 
-            /* Draw here */
-            window->draw(dino.getSprite());
-            this->render();
+        /* Draw here */
+        window->draw(dino.getSprite());
+        this->render();
 
-            // display frame
-            window->display();
-        }
+        // display frame
+        window->display();
     }
+}
 
 // actually don't think ill need this if since window is global var
 // const sf::RenderTarget& Game::get_window() const {

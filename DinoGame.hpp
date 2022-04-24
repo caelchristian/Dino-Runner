@@ -13,24 +13,23 @@
 
 using namespace sf;
 
-enum GameState {
-    startState,
+enum GameState
+{
     runState,
     pauseState,
-    endState
 };
 
-class DinoGame {
+class DinoGame
+{
 private:
     /* Window Variables */
     /* window is pointer to allow dynamic allocation in Game */
-    RenderWindow* window;
+    RenderWindow *window;
     VideoMode videoMode;
     Event event;
 
     /* Game variables */
     GameState gameState;
-    int health;
     double runSpeed;
     std::vector<sf::RectangleShape> obstacles;
     bool canJumpVar;
@@ -43,20 +42,21 @@ private:
     Texture cactusTexture;
 
     /* Sprites */
-    Sprite* bgSprite;
-    Sprite* dinoSprite;
-    Sprite* cactusSprite;
+    Sprite *bgSprite;
+    Sprite *dinoSprite;
+    Sprite *cactusSprite;
 
     /* Custom Objects */
     Dino dino;
     // vector<Obstacle> cacti;
 
     // IntRect params are (left,top,width,height)
-    IntRect dinoIntRect = IntRect(0,0,24,24);
+    IntRect dinoIntRect = IntRect(0, 0, 24, 24);
     Vector2f velocity;
 
     /* Clock */
     Clock clock;
+
 public:
     DinoGame();
     // ~DinoGame();
@@ -64,7 +64,7 @@ public:
     /* Constants */
     const float GRAVITY = 3;
     const float JUMPHEIGHT = 30;
-    const  int WINDOWWIDTH = 800;
+    const int WINDOWWIDTH = 800;
     const int WINDOWHEIGHT = 600;
 
     /* Status functions */
@@ -80,14 +80,14 @@ public:
     void initWindow();
 
     /* Accessors */
-    const sf::RenderTarget& getWindow();
+    const sf::RenderTarget &getWindow();
     // const bool canJump() const;
 
     /* Spawn functions */
-    //void spawnObstacles();
-    //void updateObstacles();
-    // void updatePlayer();
-    //void updateGame();
+    // void spawnObstacles();
+    // void updateObstacles();
+    //  void updatePlayer();
+    // void updateGame();
 
     /* Update Functions */
     void updatePlayer();
@@ -99,10 +99,9 @@ public:
     void render();
 
     void mainLoop();
-/*    const void jump(float yVelocity, float jumpHeight);
-    void eventPoll();
-    void repositionView(View &view);*/
+    /*    const void jump(float yVelocity, float jumpHeight);
+        void eventPoll();
+        void repositionView(View &view);*/
 };
 
-
-#endif //M4OEP_CCHRIST7_QWARDEN_GAME_H
+#endif // M4OEP_CCHRIST7_QWARDEN_GAME_H
