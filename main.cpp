@@ -26,14 +26,14 @@ int main()
     float jumpSpeed = 3.0f;
     int groundHeight = 300;
     // IntRect params are (left,top,width,height)
-    IntRect dinoIntRect = IntRect(0, 0, 24, 24);
+    IntRect dinoRect = IntRect(0, 0, 24, 24);
     Vector2f velocity;
 
     /* Textures */
     Texture dinoTexture;
 
     /* Objects */
-    Dino dino;
+    Sprite dino(dinoTexture, dinoRect);
 
     while (window->isOpen() && running)
     {
