@@ -1,9 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <vector>
 using namespace sf;
 
 /* Constants */
-const float GRAVITY = 1.0f;
+const float GRAVITY = .75;
 const float JUMPHEIGHT = 30;
 const int WINDOWWIDTH = 1200;
 const int WINDOWHEIGHT = 700;
@@ -51,13 +52,18 @@ int main()
     RenderWindow window(videoMode, "Dino Runner", Style::Close | Style::Titlebar);
     window.setFramerateLimit(60);
     Event event;
-    Clock clock;
+    Clock dinoClock;
+    Clock obsClock;
+    Clock frameClock;
 
     /* Game variables */
     bool running = true;
     double runSpeed = 100;
-    std::vector<RectangleShape> obstacles;
     bool canJump = true;
+    bool canJumpVar = true;
+    float jumpSpeed = 20.0f;
+    float obsMoveSpeed = 8.f;
+    int groundHeight = 550;
     // IntRect params are (left,top,width,height)
     IntRect dinoIntRect = IntRect(72, 0, 24, 24);
     float velocity;
@@ -68,6 +74,14 @@ int main()
     View mainView(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
 
     /* Textures */
+    Texture tree;
+    tree.loadFromFile("../assets/tree.png");
+    Texture tree2;
+    tree.loadFromFile("../assets/tree2.png");
+    Texture tree3;
+    tree.loadFromFile("../assets/tree3.png");
+    Texture tree4;
+    tree.loadFromFile("../assets/tree4.png");
     Texture dinoText;
     dinoText.loadFromFile("../assets/green_dino.png");
     Texture bg1Text;
@@ -105,7 +119,24 @@ int main()
     Sprite bg4(bg4Text);
     initBgSprite1(bg4);
 
-    // vector<Sprite> obstacles;
+    Sprite treeSprite1(tree);
+    treeSprite1.setScale(2,2);
+    treeSprite1.setPosition(WINDOWWIDTH+200,groundHeight);
+
+    Sprite treeSprite2(tree2);
+    treeSprite2.setScale(2,2);
+    treeSprite2.setPosition(WINDOWWIDTH+200,groundHeight);
+
+    Sprite treeSprite3(tree3);
+    treeSprite3.setScale(2,2);
+    treeSprite3.setPosition(WINDOWWIDTH+200,groundHeight);
+
+    Sprite treeSprite4(tree4);
+    treeSprite4.setScale(2,2);
+    treeSprite4.setPosition(WINDOWWIDTH+200,groundHeight);
+
+    std::vector<Sprite> obstacles;
+
 
     while (window.isOpen())
     {
@@ -154,10 +185,43 @@ int main()
             canJump = true;
         }
 
-        // this->updateCollision();
+            // this->updateCollision();
 
+            // Obstacle Clock
+            if (obsClock.getElapsedTime().asSeconds() > float(rand() % 2 + 1))
+            {
+                int randObsInt = rand() % 2;
+                switch (randObsInt)
+                {
+                    case 0:
+                        // tree
+                        obstacles.push_back(treeSprite1);
+                        break;
+                    case 1:
+                        obstacles.push_back(treeSprite3);
+                        break;
+                    case 2:
+                        obstacles.push_back(treeSprite4);
+                        break;
+                }
+                obsClock.restart();
+            }
+
+            // Run Animation Dino Clock for each frame
+            if (dinoClock.getElapsedTime().asSeconds() > float(8.0 / 60))
+            {
+                IntRect changeDinoRect;
+                // if animation is at end of sprite sheet start over
+                if (dino.getTextureRect().left == 216)
+                    dinoIntRect.left = 96;
+                else
+                    // else get next frame
+                    dinoIntRect.left += 24;
+                // jump anim
+                if (!canJumpVar)
+                    dinoIntRect.left = 72;
         // Run Animation Dino Clock for each frame
-        if (clock.getElapsedTime().asSeconds() > float(8.0 / 60))
+        if (dinoClock.getElapsedTime().asSeconds() > float(8.0 / 60))
         {
             // if animation is at end of sprite sheet start over
             if (dino.getTextureRect().left == 216)
@@ -170,7 +234,29 @@ int main()
 
             // set the dino sprite texture rect to the new frame
             dino.setTextureRect(dinoIntRect);
-            clock.restart();
+            dinoClock.restart();
+                // set the dino sprite texture rect to the new frame
+                dino.setTextureRect(dinoIntRect);
+                dinoClock.restart();
+            }
+
+            // Update everything else 60 times a second
+            if (frameClock.getElapsedTime().asSeconds() > float(1.0/60))
+            {
+                for (auto& obs : obstacles)
+                {
+                    // move obstacles down path
+                    obs.move(-obsMoveSpeed, 0);
+
+                    // if dino overlaps with obstacles
+                    if (dino.getGlobalBounds().intersects(obs.getGlobalBounds()))
+                    {
+                        running = false;
+                    }
+
+                }
+                frameClock.restart();
+            }
         }
 
         // clear frame
@@ -184,6 +270,11 @@ int main()
         bgWrap(window, bg1View, bg1_1, bg1_2);
         window.setView(mainView);
         window.draw(dino);
+
+        for (auto& obs : obstacles)
+        {
+            window.draw(obs);
+        }
 
         // display frame
         window.display();
