@@ -3,17 +3,52 @@
 using namespace sf;
 
 /* Constants */
-const float GRAVITY = 3;
+const float GRAVITY = 1.0f;
 const float JUMPHEIGHT = 30;
 const int WINDOWWIDTH = 1200;
-const int WINDOWHEIGHT = 800;
+const int WINDOWHEIGHT = 700;
+const float JUMPSPEED = 20.0f;
+const int GROUNDHEIGHT = 500;
+const int TEXTLENGTH = 1472;
+
+void bgWrap(RenderWindow &w, View &v, Sprite &sp1, Sprite &sp2)
+{
+    FloatRect bounds1 = sp1.getGlobalBounds();
+    FloatRect bounds2 = sp2.getGlobalBounds();
+    float viewX = v.getCenter().x;
+
+    if (viewX > bounds1.left + bounds1.width / 2.0)
+    {
+        sp2.setPosition(bounds1.left + bounds1.width, bounds1.top);
+    }
+    if (viewX > bounds2.left + bounds2.width / 2.0)
+    {
+        sp1.setPosition(bounds2.left + bounds2.width, bounds2.top);
+    }
+
+    w.setView(v);
+    w.draw(sp1);
+    w.draw(sp2);
+}
+
+void initBgSprite1(Sprite &sp)
+{
+    sp.setPosition(0, 0);
+    sp.setScale(4, 4);
+}
+
+void initBgSprite2(Sprite &sp)
+{
+    sp.setPosition(TEXTLENGTH, 0);
+    sp.setScale(4, 4);
+}
 
 int main()
 {
     /* Window Variables */
     /* window is pointer to allow dynamic allocation in Game */
     VideoMode videoMode(WINDOWWIDTH, WINDOWHEIGHT);
-    RenderWindow window(videoMode, "Dino Runner", sf::Style::Close | sf::Style::Titlebar);
+    RenderWindow window(videoMode, "Dino Runner", Style::Close | Style::Titlebar);
     window.setFramerateLimit(60);
     Event event;
     Clock clock;
@@ -21,40 +56,56 @@ int main()
     /* Game variables */
     bool running = true;
     double runSpeed = 100;
-    std::vector<sf::RectangleShape> obstacles;
-    bool canJumpVar = true;
-    float jumpSpeed = 20.0f;
-    int groundHeight = 550;
+    std::vector<RectangleShape> obstacles;
+    bool canJump = true;
     // IntRect params are (left,top,width,height)
     IntRect dinoIntRect = IntRect(72, 0, 24, 24);
     float velocity;
 
+    View bg1View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
+    View bg2View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
+    View bg3View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
+    View mainView(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
+
     /* Textures */
-    Texture dinoTexture;
-    dinoTexture.loadFromFile("../assets/green_dino.png");
-    Texture bg1;
-    bg1.loadFromFile("../assets/bg1.png");
-    Texture bg2;
-    bg2.loadFromFile("../assets/bg2.png");
-    Texture bg3;
-    bg3.loadFromFile("../assets/bg3.png");
-    Texture bg4;
-    bg4.loadFromFile("../assets/bg4.png");
+    Texture dinoText;
+    dinoText.loadFromFile("../assets/green_dino.png");
+    Texture bg1Text;
+    bg1Text.loadFromFile("../assets/bg1.png");
+    Texture bg2Text;
+    bg2Text.loadFromFile("../assets/bg2.png");
+    Texture bg3Text;
+    bg3Text.loadFromFile("../assets/bg3.png");
+    Texture bg4Text;
+    bg4Text.loadFromFile("../assets/bg4.png");
 
     /* Sprites */
 
-    Sprite dinoSprite(dinoTexture, dinoIntRect);
+    Sprite dino(dinoText, dinoIntRect);
     // dino y position is 1st quadrant oriented
-    dinoSprite.setPosition(100, 550);
-    dinoSprite.setScale(5.f, 5.f);
+    dino.setPosition(100, 500);
+    dino.setScale(5, 5);
+    IntRect spriteSize(0, 0, WINDOWWIDTH, WINDOWHEIGHT);
 
-    Sprite groundSprite(bg1);
-    groundSprite.setPosition(0,100);
-    groundSprite.setScale(4.f, 4.f);
+    Sprite bg1_1(bg1Text);
+    initBgSprite1(bg1_1);
+    Sprite bg1_2(bg1Text);
+    initBgSprite2(bg1_2);
+
+    Sprite bg2_1(bg2Text);
+    initBgSprite1(bg2_1);
+    Sprite bg2_2(bg2Text);
+    initBgSprite2(bg2_2);
+
+    Sprite bg3_1(bg3Text);
+    initBgSprite1(bg3_1);
+    Sprite bg3_2(bg3Text);
+    initBgSprite2(bg3_2);
+
+    Sprite bg4(bg4Text);
+    initBgSprite1(bg4);
 
     // vector<Sprite> obstacles;
-
-
 
     while (window.isOpen())
     {
@@ -64,51 +115,43 @@ int main()
             // if user closes window, end
             switch (event.type)
             {
-            case sf::Event::Closed:
+            case Event::Closed:
                 window.close();
                 break;
                 // if user presses escape, end
-            case sf::Event::KeyPressed:
-                if (event.key.code == sf::Keyboard::Escape)
+            case Event::KeyPressed:
+                if (event.key.code == Keyboard::Escape)
                     window.close();
+                if (event.key.code == Keyboard::Space && canJump)
+                {
+                    velocity = -JUMPSPEED;
+                    canJump = false;
+                }
                 break;
             default:
                 break;
             }
         }
 
+        bg1View.move(5.0f, 0);
+        bg2View.move(1.0f, 0);
+        bg3View.move(0.5f, 0);
+
         // this->updateTerrain();
         // this->spawnObstacles();
 
-        // update dino position if jump
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && canJumpVar)
-        {
-            velocity = -jumpSpeed;
-            running = true;
-            canJumpVar = false;
-        }
-
         // store reference to Dino IntRect hitbox
-        dinoSprite.move(0, velocity);
+        dino.move(0, velocity);
 
         // if the hitBox is below peak height, increase upwards velocity
-        if (dinoSprite.getPosition().y + dinoSprite.getLocalBounds().height < groundHeight)
+        if (dino.getPosition().y + dino.getLocalBounds().height < GROUNDHEIGHT)
             velocity += GRAVITY;
         // else set position to ground height - hitBox height
         else
         {
             velocity = 0;
-            dinoSprite.setPosition(dinoSprite.getPosition().x, groundHeight - dinoSprite.getLocalBounds().height);
-        }
-        // if the hitBox is below peak height, increase upwards velocity
-        if (dinoSprite.getPosition().y + dinoSprite.getLocalBounds().height < groundHeight || velocity < 0)
-            velocity += GRAVITY;
-        // else set position to ground height - hitBox height
-        else
-        {
-            velocity = 0;
-            dinoSprite.setPosition(dinoSprite.getPosition().x, groundHeight - dinoSprite.getLocalBounds().height);
-            canJumpVar = true;
+            dino.setPosition(dino.getPosition().x, GROUNDHEIGHT - dino.getLocalBounds().height);
+            canJump = true;
         }
 
         // this->updateCollision();
@@ -116,18 +159,17 @@ int main()
         // Run Animation Dino Clock for each frame
         if (clock.getElapsedTime().asSeconds() > float(8.0 / 60))
         {
-            IntRect changeDinoRect;
             // if animation is at end of sprite sheet start over
-            if (dinoSprite.getTextureRect().left == 216)
+            if (dino.getTextureRect().left == 216)
                 dinoIntRect.left = 96;
             else
                 // else get next frame
                 dinoIntRect.left += 24;
-            if (!canJumpVar)
+            if (!canJump)
                 dinoIntRect.left = 72;
 
             // set the dino sprite texture rect to the new frame
-            dinoSprite.setTextureRect(dinoIntRect);
+            dino.setTextureRect(dinoIntRect);
             clock.restart();
         }
 
@@ -135,8 +177,13 @@ int main()
         window.clear();
 
         /* Draw here */
-        window.draw(groundSprite);
-        window.draw(dinoSprite);
+        window.setView(mainView);
+        window.draw(bg4);
+        bgWrap(window, bg3View, bg3_1, bg3_2);
+        bgWrap(window, bg2View, bg2_1, bg2_2);
+        bgWrap(window, bg1View, bg1_1, bg1_2);
+        window.setView(mainView);
+        window.draw(dino);
 
         // display frame
         window.display();
