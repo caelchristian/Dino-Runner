@@ -61,9 +61,7 @@ int main()
     double runSpeed = 100;
     bool canJump = true;
     bool canJumpVar = true;
-    float jumpSpeed = 20.0f;
     float obsMoveSpeed = 8.f;
-    int groundHeight = 550;
     // IntRect params are (left,top,width,height)
     IntRect dinoIntRect = IntRect(72, 0, 24, 24);
     float velocity;
@@ -120,23 +118,22 @@ int main()
     initBgSprite1(bg4);
 
     Sprite treeSprite1(tree);
-    treeSprite1.setScale(2,2);
-    treeSprite1.setPosition(WINDOWWIDTH+200,groundHeight);
+    treeSprite1.setScale(2, 2);
+    treeSprite1.setPosition(WINDOWWIDTH + 200, GROUNDHEIGHT);
 
     Sprite treeSprite2(tree2);
-    treeSprite2.setScale(2,2);
-    treeSprite2.setPosition(WINDOWWIDTH+200,groundHeight);
+    treeSprite2.setScale(2, 2);
+    treeSprite2.setPosition(WINDOWWIDTH + 200, GROUNDHEIGHT);
 
     Sprite treeSprite3(tree3);
-    treeSprite3.setScale(2,2);
-    treeSprite3.setPosition(WINDOWWIDTH+200,groundHeight);
+    treeSprite3.setScale(2, 2);
+    treeSprite3.setPosition(WINDOWWIDTH + 200, GROUNDHEIGHT);
 
     Sprite treeSprite4(tree4);
-    treeSprite4.setScale(2,2);
-    treeSprite4.setPosition(WINDOWWIDTH+200,groundHeight);
+    treeSprite4.setScale(2, 2);
+    treeSprite4.setPosition(WINDOWWIDTH + 200, GROUNDHEIGHT);
 
     std::vector<Sprite> obstacles;
-
 
     while (window.isOpen())
     {
@@ -185,41 +182,28 @@ int main()
             canJump = true;
         }
 
-            // this->updateCollision();
+        // this->updateCollision();
 
-            // Obstacle Clock
-            if (obsClock.getElapsedTime().asSeconds() > float(rand() % 2 + 1))
+        // Obstacle Clock
+        if (obsClock.getElapsedTime().asSeconds() > float(rand() % 2 + 1))
+        {
+            int randObsInt = rand() % 2;
+            switch (randObsInt)
             {
-                int randObsInt = rand() % 2;
-                switch (randObsInt)
-                {
-                    case 0:
-                        // tree
-                        obstacles.push_back(treeSprite1);
-                        break;
-                    case 1:
-                        obstacles.push_back(treeSprite3);
-                        break;
-                    case 2:
-                        obstacles.push_back(treeSprite4);
-                        break;
-                }
-                obsClock.restart();
+            case 0:
+                // tree
+                obstacles.push_back(treeSprite1);
+                break;
+            case 1:
+                obstacles.push_back(treeSprite3);
+                break;
+            case 2:
+                obstacles.push_back(treeSprite4);
+                break;
             }
+            obsClock.restart();
+        }
 
-            // Run Animation Dino Clock for each frame
-            if (dinoClock.getElapsedTime().asSeconds() > float(8.0 / 60))
-            {
-                IntRect changeDinoRect;
-                // if animation is at end of sprite sheet start over
-                if (dino.getTextureRect().left == 216)
-                    dinoIntRect.left = 96;
-                else
-                    // else get next frame
-                    dinoIntRect.left += 24;
-                // jump anim
-                if (!canJumpVar)
-                    dinoIntRect.left = 72;
         // Run Animation Dino Clock for each frame
         if (dinoClock.getElapsedTime().asSeconds() > float(8.0 / 60))
         {
@@ -229,31 +213,42 @@ int main()
             else
                 // else get next frame
                 dinoIntRect.left += 24;
-            if (!canJump)
+            // jump anim
+            if (!canJumpVar)
                 dinoIntRect.left = 72;
+            // Run Animation Dino Clock for each frame
+            if (dinoClock.getElapsedTime().asSeconds() > float(8.0 / 60))
+            {
+                // if animation is at end of sprite sheet start over
+                if (dino.getTextureRect().left == 216)
+                    dinoIntRect.left = 96;
+                else
+                    // else get next frame
+                    dinoIntRect.left += 24;
+                if (!canJump)
+                    dinoIntRect.left = 72;
 
-            // set the dino sprite texture rect to the new frame
-            dino.setTextureRect(dinoIntRect);
-            dinoClock.restart();
+                // set the dino sprite texture rect to the new frame
+                dino.setTextureRect(dinoIntRect);
+                dinoClock.restart();
                 // set the dino sprite texture rect to the new frame
                 dino.setTextureRect(dinoIntRect);
                 dinoClock.restart();
             }
 
             // Update everything else 60 times a second
-            if (frameClock.getElapsedTime().asSeconds() > float(1.0/60))
+            if (frameClock.getElapsedTime().asSeconds() > float(1.0 / 60))
             {
-                for (auto& obs : obstacles)
+                for (auto &obs : obstacles)
                 {
                     // move obstacles down path
                     obs.move(-obsMoveSpeed, 0);
 
                     // if dino overlaps with obstacles
-                    if (dino.getGlobalBounds().intersects(obs.getGlobalBounds()))
+                    if (dino.getLocalBounds().intersects(obs.getLocalBounds()))
                     {
                         running = false;
                     }
-
                 }
                 frameClock.restart();
             }
@@ -271,7 +266,7 @@ int main()
         window.setView(mainView);
         window.draw(dino);
 
-        for (auto& obs : obstacles)
+        for (auto &obs : obstacles)
         {
             window.draw(obs);
         }
