@@ -20,7 +20,7 @@
 #### Download your systems 
 
 ## Grade: 100
-#### All requirements were met. As well as use of a different API than the starter code provided was a great challenge.
+#### All requirements were met, as well as use of a different API than the starter code that was provided was a great challenge.
 
 ## Assets used (free domain):
 ### [nature-things](https://shubibubi.itch.io/nature-things)
