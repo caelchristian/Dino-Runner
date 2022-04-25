@@ -271,7 +271,7 @@ int main()
                 // move obstacles down path
                 obs.move(-OBSMOVESPEED, 0);
                 FloatRect bounds = obs.getGlobalBounds();
-                FloatRect smaller(bounds.left + 25, bounds.top, bounds.width - 40, bounds.height - 30);
+                FloatRect smaller(bounds.left + 25, bounds.top, bounds.width - 50, bounds.height - 30);
 
                 // if dino overlaps with obstacles
                 if (dino.getGlobalBounds().intersects(smaller))
