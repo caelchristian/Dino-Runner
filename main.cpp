@@ -61,7 +61,9 @@ int main()
     double runSpeed = 100;
     bool canJump = true;
     bool canJumpVar = true;
+    float jumpSpeed = 20.0f;
     float obsMoveSpeed = 8.f;
+    int groundHeight = 550;
     // IntRect params are (left,top,width,height)
     IntRect dinoIntRect = IntRect(72, 0, 24, 24);
     float velocity;
@@ -134,6 +136,7 @@ int main()
     treeSprite4.setPosition(WINDOWWIDTH + 200, GROUNDHEIGHT);
 
     std::vector<Sprite> obstacles;
+
 
     while (window.isOpen())
     {
@@ -216,25 +219,10 @@ int main()
             // jump anim
             if (!canJumpVar)
                 dinoIntRect.left = 72;
-            // Run Animation Dino Clock for each frame
-            if (dinoClock.getElapsedTime().asSeconds() > float(8.0 / 60))
-            {
-                // if animation is at end of sprite sheet start over
-                if (dino.getTextureRect().left == 216)
-                    dinoIntRect.left = 96;
-                else
-                    // else get next frame
-                    dinoIntRect.left += 24;
-                if (!canJump)
-                    dinoIntRect.left = 72;
-
-                // set the dino sprite texture rect to the new frame
-                dino.setTextureRect(dinoIntRect);
-                dinoClock.restart();
-                // set the dino sprite texture rect to the new frame
-                dino.setTextureRect(dinoIntRect);
-                dinoClock.restart();
-            }
+            // set the dino sprite texture rect to the new frame
+            dino.setTextureRect(dinoIntRect);
+            dinoClock.restart();
+        }
 
             // Update everything else 60 times a second
             if (frameClock.getElapsedTime().asSeconds() > float(1.0 / 60))
@@ -249,6 +237,7 @@ int main()
                     {
                         running = false;
                     }
+
                 }
                 frameClock.restart();
             }
