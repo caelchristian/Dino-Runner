@@ -1,4 +1,4 @@
-# M4OEP-cchrist7-qwarden
+# Module 4 Large Project (Cael Christian and Quimby Warden)
 
 ## Required Libraries: SFML 2.5.x
 
@@ -20,4 +20,9 @@
 #### Download your systems 
 
 ## Grade: 100
-#### All requirements were met. As well as use of a 
+#### All requirements were met. As well as use of a different API than the starter code provided was a great challenge.
+
+## Assets used (free domain):
+### [nature-things](https://shubibubi.itch.io/nature-things)
+### [free-grasslands-tileset](https://untiedgames.itch.io/free-grasslands-tileset?download)
+### [dino-characters](https://arks.itch.io/dino-characters)
