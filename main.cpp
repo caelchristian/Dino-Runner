@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
+#include <iostream>
+using namespace std;
 using namespace sf;
 
 /* Constants */
@@ -11,8 +13,9 @@ const int WINDOWHEIGHT = 700;
 const float JUMPSPEED = 20.0f;
 const int GROUNDHEIGHT = 500;
 const int TEXTLENGTH = 1472;
+float OBSMOVESPEED = 5.f;
 
-void bgWrap(RenderWindow &w, View &v, Sprite &sp1, Sprite &sp2)
+void bgWrap(View &v, Sprite &sp1, Sprite &sp2)
 {
     FloatRect bounds1 = sp1.getGlobalBounds();
     FloatRect bounds2 = sp2.getGlobalBounds();
@@ -26,10 +29,6 @@ void bgWrap(RenderWindow &w, View &v, Sprite &sp1, Sprite &sp2)
     {
         sp1.setPosition(bounds2.left + bounds2.width, bounds2.top);
     }
-
-    w.setView(v);
-    w.draw(sp1);
-    w.draw(sp2);
 }
 
 void initBgSprite1(Sprite &sp)
@@ -55,6 +54,15 @@ int main()
     Clock dinoClock;
     Clock obsClock;
     Clock frameClock;
+    Font font;
+    font.loadFromFile("../assets/Pixeboy-z8XGD.ttf");
+
+    Text message;
+    message.setFont(font);
+    message.setString("Click Anywhere to Play Again!");
+    message.setCharacterSize(90);
+    message.setFillColor(sf::Color::Black);
+    message.setPosition(WINDOWWIDTH / 2 - message.getLocalBounds().width / 2, WINDOWHEIGHT / 2 - message.getLocalBounds().height);
 
     /* Game variables */
     bool running = true;
@@ -62,7 +70,7 @@ int main()
     bool canJump = true;
     bool canJumpVar = true;
     float jumpSpeed = 20.0f;
-    float obsMoveSpeed = 8.f;
+
     int groundHeight = 550;
     // IntRect params are (left,top,width,height)
     IntRect dinoIntRect = IntRect(72, 0, 24, 24);
@@ -77,11 +85,11 @@ int main()
     Texture tree;
     tree.loadFromFile("../assets/tree.png");
     Texture tree2;
-    tree.loadFromFile("../assets/tree2.png");
+    tree2.loadFromFile("../assets/tree2.png");
     Texture tree3;
-    tree.loadFromFile("../assets/tree3.png");
+    tree3.loadFromFile("../assets/tree3.png");
     Texture tree4;
-    tree.loadFromFile("../assets/tree4.png");
+    tree4.loadFromFile("../assets/tree4.png");
     Texture dinoText;
     dinoText.loadFromFile("../assets/green_dino.png");
     Texture bg1Text;
@@ -121,22 +129,21 @@ int main()
 
     Sprite treeSprite1(tree);
     treeSprite1.setScale(2, 2);
-    treeSprite1.setPosition(WINDOWWIDTH + 200, GROUNDHEIGHT);
+    treeSprite1.setPosition(WINDOWWIDTH + 100, GROUNDHEIGHT);
 
     Sprite treeSprite2(tree2);
     treeSprite2.setScale(2, 2);
-    treeSprite2.setPosition(WINDOWWIDTH + 200, GROUNDHEIGHT);
+    treeSprite2.setPosition(WINDOWWIDTH + 100, GROUNDHEIGHT);
 
     Sprite treeSprite3(tree3);
     treeSprite3.setScale(2, 2);
-    treeSprite3.setPosition(WINDOWWIDTH + 200, GROUNDHEIGHT);
+    treeSprite3.setPosition(WINDOWWIDTH + 100, GROUNDHEIGHT);
 
     Sprite treeSprite4(tree4);
     treeSprite4.setScale(2, 2);
-    treeSprite4.setPosition(WINDOWWIDTH + 200, GROUNDHEIGHT);
+    treeSprite4.setPosition(WINDOWWIDTH + 100, GROUNDHEIGHT);
 
-    std::vector<Sprite> obstacles;
-
+    vector<Sprite> obstacles;
 
     while (window.isOpen())
     {
@@ -159,87 +166,100 @@ int main()
                     canJump = false;
                 }
                 break;
+            case Event::MouseButtonPressed:
+                if (!running)
+                {
+                    obstacles.clear();
+                    running = true;
+                }
             default:
                 break;
             }
         }
 
-        bg1View.move(5.0f, 0);
-        bg2View.move(1.0f, 0);
-        bg3View.move(0.5f, 0);
-
-        // this->updateTerrain();
-        // this->spawnObstacles();
-
-        // store reference to Dino IntRect hitbox
-        dino.move(0, velocity);
-
-        // if the hitBox is below peak height, increase upwards velocity
-        if (dino.getPosition().y + dino.getLocalBounds().height < GROUNDHEIGHT)
-            velocity += GRAVITY;
-        // else set position to ground height - hitBox height
-        else
+        if (running)
         {
-            velocity = 0;
-            dino.setPosition(dino.getPosition().x, GROUNDHEIGHT - dino.getLocalBounds().height);
-            canJump = true;
-        }
 
-        // this->updateCollision();
+            bg1View.move(5.0f, 0);
+            bg2View.move(1.0f, 0);
+            bg3View.move(0.5f, 0);
 
-        // Obstacle Clock
-        if (obsClock.getElapsedTime().asSeconds() > float(rand() % 2 + 1))
-        {
-            int randObsInt = rand() % 2;
-            switch (randObsInt)
-            {
-            case 0:
-                // tree
-                obstacles.push_back(treeSprite1);
-                break;
-            case 1:
-                obstacles.push_back(treeSprite3);
-                break;
-            case 2:
-                obstacles.push_back(treeSprite4);
-                break;
-            }
-            obsClock.restart();
-        }
+            bgWrap(bg3View, bg3_1, bg3_2);
+            bgWrap(bg2View, bg2_1, bg2_2);
+            bgWrap(bg1View, bg1_1, bg1_2);
 
-        // Run Animation Dino Clock for each frame
-        if (dinoClock.getElapsedTime().asSeconds() > float(8.0 / 60))
-        {
-            // if animation is at end of sprite sheet start over
-            if (dino.getTextureRect().left == 216)
-                dinoIntRect.left = 96;
+            // this->updateTerrain();
+            // this->spawnObstacles();
+
+            // store reference to Dino IntRect hitbox
+            dino.move(0, velocity);
+
+            // if the hitBox is below peak height, increase upwards velocity
+            if (dino.getPosition().y + dino.getLocalBounds().height < GROUNDHEIGHT)
+                velocity += GRAVITY;
+            // else set position to ground height - hitBox height
             else
-                // else get next frame
-                dinoIntRect.left += 24;
-            // jump anim
-            if (!canJumpVar)
-                dinoIntRect.left = 72;
-            // set the dino sprite texture rect to the new frame
-            dino.setTextureRect(dinoIntRect);
-            dinoClock.restart();
-        }
+            {
+                velocity = 0;
+                dino.setPosition(dino.getPosition().x, GROUNDHEIGHT - dino.getLocalBounds().height);
+                canJump = true;
+            }
+
+            // this->updateCollision();
+
+            // Obstacle Clock
+            if (obsClock.getElapsedTime().asSeconds() > float(rand() % 2 + 3))
+            {
+                int randObsInt = (rand() % static_cast<int>(3 + 1));
+                switch (randObsInt)
+                {
+                case 0:
+                    obstacles.push_back(treeSprite1);
+                    break;
+                case 1:
+                    obstacles.push_back(treeSprite2);
+                    break;
+                case 2:
+                    obstacles.push_back(treeSprite3);
+                    break;
+                case 3:
+                    obstacles.push_back(treeSprite4);
+                    break;
+                default:
+                    cerr << "UNREACHABLE!" << endl;
+                }
+
+                obsClock.restart();
+            }
+
+            // Run Animation Dino Clock for each frame
+            if (dinoClock.getElapsedTime().asSeconds() > float(8.0 / 60))
+            {
+                // if animation is at end of sprite sheet start over
+                if (dino.getTextureRect().left == 216)
+                    dinoIntRect.left = 96;
+                else
+                    // else get next frame
+                    dinoIntRect.left += 24;
+                // jump anim
+                if (!canJumpVar)
+                    dinoIntRect.left = 72;
+                // set the dino sprite texture rect to the new frame
+                dino.setTextureRect(dinoIntRect);
+                dinoClock.restart();
+            }
 
             // Update everything else 60 times a second
-            if (frameClock.getElapsedTime().asSeconds() > float(1.0 / 60))
+            for (auto &obs : obstacles)
             {
-                for (auto &obs : obstacles)
+                // move obstacles down path
+                obs.move(-OBSMOVESPEED, 0);
+
+                // if dino overlaps with obstacles
+                if (dino.getGlobalBounds().intersects(obs.getGlobalBounds()))
                 {
-                    // move obstacles down path
-                    obs.move(-obsMoveSpeed, 0);
-
-                    // if dino overlaps with obstacles
-                    if (dino.getLocalBounds().intersects(obs.getLocalBounds()))
-                    {
-                        running = false;
-                    }
-
+                    running = false;
                 }
-                frameClock.restart();
             }
         }
 
@@ -249,15 +269,30 @@ int main()
         /* Draw here */
         window.setView(mainView);
         window.draw(bg4);
-        bgWrap(window, bg3View, bg3_1, bg3_2);
-        bgWrap(window, bg2View, bg2_1, bg2_2);
-        bgWrap(window, bg1View, bg1_1, bg1_2);
+
+        window.setView(bg3View);
+        window.draw(bg3_1);
+        window.draw(bg3_2);
+
+        window.setView(bg2View);
+        window.draw(bg2_1);
+        window.draw(bg2_2);
+
+        window.setView(bg1View);
+        window.draw(bg1_1);
+        window.draw(bg1_2);
+
         window.setView(mainView);
         window.draw(dino);
 
         for (auto &obs : obstacles)
         {
             window.draw(obs);
+        }
+
+        if (!running)
+        {
+            window.draw(message);
         }
 
         // display frame
