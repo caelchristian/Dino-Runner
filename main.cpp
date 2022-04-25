@@ -13,7 +13,7 @@ const int WINDOWHEIGHT = 700;
 const float JUMPSPEED = 20.0f;
 const int GROUNDHEIGHT = 500;
 const int TEXTLENGTH = 1472;
-float OBSMOVESPEED = 5.f;
+const float OBSMOVESPEED = 5.f;
 
 void bgWrap(View &v, Sprite &sp1, Sprite &sp2)
 {
