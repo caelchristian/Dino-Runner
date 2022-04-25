@@ -165,6 +165,26 @@ int main()
                     velocity = -JUMPSPEED;
                     canJump = false;
                 }
+                if (event.key.code == sf::Keyboard::G)
+                {
+                    dinoText.loadFromFile("../assets/green_dino.png");
+                    dino.setTexture(dinoText);
+                }
+                if (event.key.code == sf::Keyboard::R)
+                {
+                    dinoText.loadFromFile("../assets/red_dino.png");
+                    dino.setTexture(dinoText);
+                }
+                if (event.key.code == sf::Keyboard::Y)
+                {
+                    dinoText.loadFromFile("../assets/yellow_dino.png");
+                    dino.setTexture(dinoText);
+                }
+                if (event.key.code == sf::Keyboard::B)
+                {
+                    dinoText.loadFromFile("../assets/blue_dino.png");
+                    dino.setTexture(dinoText);
+                }
                 break;
             case Event::MouseButtonPressed:
                 if (!running)
@@ -256,7 +276,12 @@ int main()
                 obs.move(-OBSMOVESPEED, 0);
 
                 // if dino overlaps with obstacles
-                if (dino.getGlobalBounds().intersects(obs.getGlobalBounds()))
+                Rect<float> obsHitbox = obs.getGlobalBounds();
+                obsHitbox.width -= 10;
+                obsHitbox.width -= 10;
+
+                // if dino overlaps with obstacles
+                if (dino.getGlobalBounds().intersects(obsHitbox))
                 {
                     running = false;
                 }
@@ -291,9 +316,7 @@ int main()
         }
 
         if (!running)
-        {
             window.draw(message);
-        }
 
         // display frame
         window.display();
