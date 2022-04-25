@@ -46,7 +46,6 @@ void initBgSprite2(Sprite &sp)
 int main()
 {
     /* Window Variables */
-    /* window is pointer to allow dynamic allocation in Game */
     VideoMode videoMode(WINDOWWIDTH, WINDOWHEIGHT);
     RenderWindow window(videoMode, "Dino Runner", Style::Close | Style::Titlebar);
     window.setFramerateLimit(60);
@@ -71,6 +70,7 @@ int main()
     IntRect dinoIntRect = IntRect(72, 0, 24, 24);
     float velocity;
 
+    // Views for parallax effect
     View bg1View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
     View bg2View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
     View bg3View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
@@ -140,6 +140,7 @@ int main()
 
     vector<Sprite> obstacles;
 
+    // Main loop
     while (window.isOpen())
     {
         // poll to quit game
@@ -192,11 +193,14 @@ int main()
             }
         }
 
+        // Make sure game is in running state
         if (running)
         {
+            // Clear make sure obstacles vector doesn't get too big
             if (obstacles.size() > 10)
                 obstacles.erase(obstacles.begin());
 
+            // Move views for parallax
             bg1View.move(5.0f, 0);
             bg2View.move(1.0f, 0);
             bg3View.move(0.5f, 0);
@@ -204,9 +208,6 @@ int main()
             bgWrap(bg3View, bg3_1, bg3_2);
             bgWrap(bg2View, bg2_1, bg2_2);
             bgWrap(bg1View, bg1_1, bg1_2);
-
-            // this->updateTerrain();
-            // this->spawnObstacles();
 
             // store reference to Dino IntRect hitbox
             dino.move(0, velocity);
@@ -221,8 +222,6 @@ int main()
                 dino.setPosition(dino.getPosition().x, GROUNDHEIGHT - dino.getLocalBounds().height);
                 canJump = true;
             }
-
-            // this->updateCollision();
 
             // Obstacle Clock
             if (obsClock.getElapsedTime().asSeconds() > float(rand() % 2 + 3))
