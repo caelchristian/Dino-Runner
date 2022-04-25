@@ -14,7 +14,7 @@
 #### If you're having trouble the [compiling with cmake](https://www.sfml-dev.org/tutorials/2.5/compile-with-cmake.php) documentation may help.
 
 ## Run the dino executable inside cmake-build-debug
-####(project root dir)/make-build-debug/dino
+#### (project root dir)/make-build-debug/dino
 
 ### If the compiler cannot find <SFML/Graphics.hpp> you may need to add SFML libraries manually. Refer to the SFML documentation above.
 
