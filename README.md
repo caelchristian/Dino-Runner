@@ -25,3 +25,4 @@
 ### [nature-things](https://shubibubi.itch.io/nature-things)
 ### [free-grasslands-tileset](https://untiedgames.itch.io/free-grasslands-tileset?download)
 ### [dino-characters](https://arks.itch.io/dino-characters)
+### [pixeboy-font](https://fontlot.com/152185/pixeboy-display-font/)
