@@ -16,8 +16,7 @@
 ## Run the dino executable inside cmake-build-debug
 ####(project root dir)/make-build-debug/dino
 
-### If the compiler cannot find <SFML/Graphics.hpp> you may need to add SFML libraries manually. Refer to the online documentation here: 
-#### Download your systems 
+### If the compiler cannot find <SFML/Graphics.hpp> you may need to add SFML libraries manually. Refer to the SFML documentation above.
 
 ## Grade: 100
 #### All requirements were met, as well as use of a different API than the starter code that was provided was a great challenge.
