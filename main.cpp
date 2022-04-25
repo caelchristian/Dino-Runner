@@ -66,12 +66,7 @@ int main()
 
     /* Game variables */
     bool running = true;
-    double runSpeed = 100;
     bool canJump = true;
-    bool canJumpVar = true;
-    float jumpSpeed = 20.0f;
-
-    int groundHeight = 550;
     // IntRect params are (left,top,width,height)
     IntRect dinoIntRect = IntRect(72, 0, 24, 24);
     float velocity;
@@ -199,6 +194,8 @@ int main()
 
         if (running)
         {
+            if (obstacles.size() > 10)
+                obstacles.erase(obstacles.begin());
 
             bg1View.move(5.0f, 0);
             bg2View.move(1.0f, 0);
@@ -262,7 +259,7 @@ int main()
                     // else get next frame
                     dinoIntRect.left += 24;
                 // jump anim
-                if (!canJumpVar)
+                if (!canJump)
                     dinoIntRect.left = 72;
                 // set the dino sprite texture rect to the new frame
                 dino.setTextureRect(dinoIntRect);
@@ -274,17 +271,12 @@ int main()
             {
                 // move obstacles down path
                 obs.move(-OBSMOVESPEED, 0);
+                FloatRect bounds = obs.getGlobalBounds();
+                FloatRect smaller(bounds.left + 25, bounds.top, bounds.width - 25, bounds.height - 30);
 
                 // if dino overlaps with obstacles
-                Rect<float> obsHitbox = obs.getGlobalBounds();
-                obsHitbox.width -= 10;
-                obsHitbox.width -= 10;
-
-                // if dino overlaps with obstacles
-                if (dino.getGlobalBounds().intersects(obsHitbox))
-                {
+                if (dino.getGlobalBounds().intersects(smaller))
                     running = false;
-                }
             }
         }
 
