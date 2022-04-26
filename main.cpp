@@ -6,7 +6,7 @@ using namespace std;
 using namespace sf;
 
 /* Constants */
-const float GRAVITY = .75;
+const float GRAVITY = .6;
 const float JUMPHEIGHT = 30;
 const int WINDOWWIDTH = 1200;
 const int WINDOWHEIGHT = 700;
@@ -14,6 +14,9 @@ const float JUMPSPEED = 20.0f;
 const int GROUNDHEIGHT = 500;
 const int TEXTLENGTH = 1472;
 const float OBSMOVESPEED = 5.f;
+const int DINOOFFSET = 5;
+const int DINOSCALE = 5;
+const int DINOWIDTH = 24;
 
 void bgWrap(View &v, Sprite &sp1, Sprite &sp2)
 {
@@ -43,6 +46,12 @@ void initBgSprite2(Sprite &sp)
     sp.setScale(4, 4);
 }
 
+void initTreeSprite(Sprite &sp)
+{
+    sp.setScale(3, 3);
+    sp.setPosition(WINDOWWIDTH + 100, GROUNDHEIGHT - 50);
+}
+
 int main()
 {
     /* Window Variables */
@@ -67,7 +76,7 @@ int main()
     bool running = true;
     bool canJump = true;
     // IntRect params are (left,top,width,height)
-    IntRect dinoIntRect = IntRect(72, 0, 24, 24);
+    IntRect dinoIntRect = IntRect(72, 0, DINOWIDTH, DINOWIDTH);
     float velocity;
 
     // Views for parallax effect
@@ -101,7 +110,7 @@ int main()
     Sprite dino(dinoText, dinoIntRect);
     // dino y position is 1st quadrant oriented
     dino.setPosition(100, 500);
-    dino.setScale(5, 5);
+    dino.setScale(DINOSCALE, DINOSCALE);
     IntRect spriteSize(0, 0, WINDOWWIDTH, WINDOWHEIGHT);
 
     Sprite bg1_1(bg1Text);
@@ -123,20 +132,16 @@ int main()
     initBgSprite1(bg4);
 
     Sprite treeSprite1(tree);
-    treeSprite1.setScale(2, 2);
-    treeSprite1.setPosition(WINDOWWIDTH + 100, GROUNDHEIGHT);
+    initTreeSprite(treeSprite1);
 
     Sprite treeSprite2(tree2);
-    treeSprite2.setScale(2, 2);
-    treeSprite2.setPosition(WINDOWWIDTH + 100, GROUNDHEIGHT);
+    initTreeSprite(treeSprite2);
 
     Sprite treeSprite3(tree3);
-    treeSprite3.setScale(2, 2);
-    treeSprite3.setPosition(WINDOWWIDTH + 100, GROUNDHEIGHT);
+    initTreeSprite(treeSprite3);
 
     Sprite treeSprite4(tree4);
-    treeSprite4.setScale(2, 2);
-    treeSprite4.setPosition(WINDOWWIDTH + 100, GROUNDHEIGHT);
+    initTreeSprite(treeSprite4);
 
     vector<Sprite> obstacles;
 
@@ -224,7 +229,7 @@ int main()
             }
 
             // Obstacle Clock
-            if (obsClock.getElapsedTime().asSeconds() > float(rand() % 2 + 3))
+            if (obsClock.getElapsedTime().asSeconds() > rand() % 2 + 3)
             {
                 int randObsInt = (rand() % static_cast<int>(3 + 1));
                 switch (randObsInt)
@@ -265,16 +270,16 @@ int main()
                 dinoClock.restart();
             }
 
+            FloatRect dinobounds = dino.getGlobalBounds();
+            dinobounds.width -= DINOOFFSET * DINOSCALE;
+            dinobounds.left += DINOOFFSET * DINOSCALE;
             // Update everything else 60 times a second
             for (auto &obs : obstacles)
             {
                 // move obstacles down path
                 obs.move(-OBSMOVESPEED, 0);
-                FloatRect bounds = obs.getGlobalBounds();
-                FloatRect smaller(bounds.left + 25, bounds.top, bounds.width - 50, bounds.height - 30);
-
                 // if dino overlaps with obstacles
-                if (dino.getGlobalBounds().intersects(smaller))
+                if (dinobounds.intersects(obs.getGlobalBounds()))
                     running = false;
             }
         }
