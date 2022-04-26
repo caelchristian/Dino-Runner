@@ -80,10 +80,10 @@ int main()
     float velocity;
 
     // Views for parallax effect
-    View bg1View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
-    View bg2View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
-    View bg3View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
-    View mainView(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(1200, 700));
+    View bg1View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(WINDOWWIDTH, WINDOWHEIGHT));
+    View bg2View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(WINDOWWIDTH, WINDOWHEIGHT));
+    View bg3View(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(WINDOWWIDTH, WINDOWHEIGHT));
+    View mainView(Vector2f(WINDOWWIDTH / 2, WINDOWHEIGHT / 2), Vector2f(WINDOWWIDTH, WINDOWHEIGHT));
 
     /* Textures */
     Texture tree;
