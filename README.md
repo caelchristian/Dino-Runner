@@ -1,6 +1,7 @@
-# Module 4 Large Project (Cael Christian and Quimby Warden)
+# Dino Runner
+## Our spin on Google's Dinosaur Game!
 
-## Required Libraries: SFML 2.5.x
+### Required Libraries: SFML ≥2.5.x
 
 ## Install the libraries (for Windows) [here](https://www.sfml-dev.org/download/sfml/2.5.1/).
 ### Note: You should be careful to install the 32/64 bit versions according to your machine.
@@ -17,9 +18,6 @@
 #### (project root dir)/make-build-debug/dino
 
 ### If the compiler cannot find <SFML/Graphics.hpp> you may need to add SFML libraries manually. Refer to the SFML documentation above.
-
-## Grade: 100
-#### All requirements were met, as well as use of a different API than the starter code that was provided was a great challenge.
 
 ## Assets used (free domain):
 ### [nature-things](https://shubibubi.itch.io/nature-things)
